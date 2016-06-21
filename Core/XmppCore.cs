@@ -344,7 +344,7 @@ namespace Sharp.Xmpp.Core
             moveNextSrvDNS(hostname);
             if (dnsCurrent != null)
             {
-                Hostname = dnsCurrent.Target;
+                Hostname = dnsCurrent.Target.ToString();
                 Port = dnsCurrent.Port;
             }
             else
@@ -380,7 +380,7 @@ namespace Sharp.Xmpp.Core
             moveNextSrvDNS(hostname);
             if (dnsCurrent != null)
             {
-                Hostname = dnsCurrent.Target;
+                Hostname = dnsCurrent.Target.ToString();
                 Port = dnsCurrent.Port;
             }
             else
@@ -411,7 +411,8 @@ namespace Sharp.Xmpp.Core
             };
             dnsIsInit = true;
 
-            DnsMessage dnsMessage = DnsClient.Default.Resolve("_xmpp-client._tcp." + domain, RecordType.Srv);
+            var domainName = ARSoft.Tools.Net.DomainName.Parse(("_xmpp-client._tcp." + domain));
+            DnsMessage dnsMessage = DnsClient.Default.Resolve(domainName, RecordType.Srv);
             if ((dnsMessage == null) || ((dnsMessage.ReturnCode != ReturnCode.NoError) && (dnsMessage.ReturnCode != ReturnCode.NxDomain)))
             {
                 //If DNS SRV records lookup fails then continue with the host name
