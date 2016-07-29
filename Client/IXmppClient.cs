@@ -485,7 +485,7 @@ namespace Sharp.Xmpp.Client
         /// <exception cref="XmppException">The server returned invalid data or another
         /// unspecified XMPP error occurred.</exception>
         /// <include file='Examples.xml' path='S22/Xmpp/Client/XmppClient[@name="GetRoster"]/*'/>
-        Roster GetRoster();
+        IRoster GetRoster();
 
         /// <summary>
         /// Retrieves the current time of the XMPP client with the specified JID.

@@ -17,7 +17,7 @@ namespace Sharp.Xmpp.Client
     /// simplifies some of the more complicated aspects such as privacy lists and
     /// roster management. It also implements various XMPP protocol extensions.
     /// </remarks>
-    public class XmppClient : IDisposable
+    public class XmppClient : IXmppClient
     {
         /// <summary>
         /// True if the instance has been disposed of.
@@ -963,7 +963,7 @@ namespace Sharp.Xmpp.Client
         /// <exception cref="XmppException">The server returned invalid data or another
         /// unspecified XMPP error occurred.</exception>
         /// <include file='Examples.xml' path='S22/Xmpp/Client/XmppClient[@name="GetRoster"]/*'/>
-        public Roster GetRoster()
+        public IRoster GetRoster()
         {
             AssertValid();
             return im.GetRoster();
