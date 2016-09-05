@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\FileTransferSettings.cs" />
+    <Compile Include="Client\IXmppClient.cs" />
     <Compile Include="Client\XmppClient.cs" />
     <Compile Include="Core\ErrorEventArgs.cs" />
     <Compile Include="Extensions\CustomExtension\CustomIqExtension.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Extensions\XEP-0231\BobData.cs" />
     <Compile Include="Extensions\XEP-0279\ServerIpCheck.cs" />
     <Compile Include="Extensions\XEP-0280\MessageCarbons.cs" />
+    <Compile Include="Im\IRoster.cs" />
     <Compile Include="Im\SubscriptionRequest.cs" />
     <Compile Include="XmppDisconnectionException.cs" />
     <Compile Include="XmppExceptions.cs" />
