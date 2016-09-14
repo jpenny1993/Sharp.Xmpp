@@ -105,6 +105,7 @@
     <Compile Include="Extensions\XEP-0045\GroupInviteEventArgs.cs" />
     <Compile Include="Extensions\XEP-0045\GroupPresenceEventArgs.cs" />
     <Compile Include="Extensions\XEP-0045\History.cs" />
+    <Compile Include="Extensions\XEP-0045\IInvite.cs" />
     <Compile Include="Extensions\XEP-0045\InviteDeclined.cs" />
     <Compile Include="Extensions\XEP-0045\Invite.cs" />
     <Compile Include="Extensions\XEP-0045\MucError.cs" />

@@ -1921,7 +1921,7 @@ namespace Sharp.Xmpp.Client
         /// </summary>
         /// <param name="invite">Original group chat invitation.</param>
         /// <param name="reason">Reason for declining.</param>
-        public void DeclineInvite(Invite invite, string reason)
+        public void DeclineInvite(IInvite invite, string reason)
         {
             groupChat.DeclineInvite(invite, reason);
         }

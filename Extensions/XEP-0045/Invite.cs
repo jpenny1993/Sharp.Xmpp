@@ -9,7 +9,7 @@ namespace Sharp.Xmpp.Extensions
     /// <summary>
     /// Implements MUC Mediated Invitation as described in XEP-0045.
     /// </summary>
-    public class Invite : Message
+    public class Invite : Message, IInvite
     {
         private const string rootTag = "message",
             xTag = "x",

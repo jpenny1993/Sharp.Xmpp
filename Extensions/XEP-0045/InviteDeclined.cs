@@ -23,7 +23,7 @@ namespace Sharp.Xmpp.Extensions
         /// </summary>
         /// <param name="invite">Invitation to a chat room.</param>
         /// <param name="reason">Message included with the invitation.</param>
-        public InviteDeclined(Invite invite, string reason)
+        public InviteDeclined(IInvite invite, string reason)
             : base(invite.From, invite.To, Xml.Element(xTag, MucNs.NsUser))
         {
             XElement.Child(Xml.Element(inviteTag).Child(Xml.Element(reasonTag)));

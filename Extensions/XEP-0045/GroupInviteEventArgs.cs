@@ -10,7 +10,7 @@ namespace Sharp.Xmpp.Extensions
         /// <summary>
         /// The full invite object.
         /// </summary>
-        public Invite Data { get; private set; }
+        public IInvite Data { get; private set; }
         
         /// <summary>
         /// Person who sent the invitation.
@@ -36,7 +36,7 @@ namespace Sharp.Xmpp.Extensions
         /// Constructs a GroupInviteEventArgs.
         /// </summary>
         /// <param name="invite">Group Chat Invitation.</param>
-        public GroupInviteEventArgs(Invite invite)
+        public GroupInviteEventArgs(IInvite invite)
         {
             invite.ThrowIfNull("invite");
             Data = invite;

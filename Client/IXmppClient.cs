@@ -358,7 +358,7 @@ namespace Sharp.Xmpp.Client
         /// </summary>
         /// <param name="invite">Original group chat invitation.</param>
         /// <param name="reason">Reason for declining.</param>
-        void DeclineInvite(Invite invite, string reason);
+        void DeclineInvite(IInvite invite, string reason);
 
         /// <summary>
         /// Returns a list of active public chat room messages.
