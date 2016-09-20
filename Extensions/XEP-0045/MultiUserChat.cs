@@ -210,13 +210,46 @@ namespace Sharp.Xmpp.Extensions
         /// <param name="password">(Optional) Password</param>
         public void JoinRoom(Jid jid, string nickname, string password = null)
         {
+            List<XmlElement> elems = new List<XmlElement>();
+            elems.Add(Xml.Element("show").Text("online"));
+            
             XmlElement elem = Xml.Element("x", MucNs.NsMain);
-
             if (!string.IsNullOrEmpty(password))
-                elem.Child(Xml.Element("password").Text(password));
+                elems.Add(elem.Child(Xml.Element("password").Text(password)));
 
             Jid joinRequest = new Jid(jid.Domain, jid.Node, nickname);
-            var msg = new Im.Presence(joinRequest, im.Jid, PresenceType.Available, null, null, elem);
+            var msg = new Im.Presence(joinRequest, im.Jid, PresenceType.Available, null, null, elems.ToArray());
+            
+            im.SendPresence(msg);
+        }
+
+        /// <summary>
+        /// Sets your presence in the specified room.
+        /// </summary>
+        public void SetStatusInRoom(Jid roomWithNick, Availability availability)
+        {
+            PresenceType presnceState = PresenceType.Available;
+            XmlElement elem = null;
+            var states = new Dictionary<Availability, string>()
+            {
+                { Availability.Online, "online" },
+                { Availability.Away, "away" },
+                { Availability.Dnd, "dnd" },
+                { Availability.Xa, "xa" },
+                { Availability.Chat, "chat" }
+            };
+
+            if (availability == Availability.Offline)
+            {
+                presnceState = PresenceType.Unavailable;
+            }
+            else
+            {
+                elem = Xml.Element("show").Text(states[availability]);
+            }
+
+            var msg = new Im.Presence(roomWithNick, im.Jid, presnceState, null, null, elem);
+            
             im.SendPresence(msg);
         }
 

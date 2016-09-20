@@ -1792,6 +1792,15 @@ namespace Sharp.Xmpp.Client
         }
 
         /// <summary>
+        /// Sets your presence in the specified room.
+        /// </summary>
+        public void SetRoomStatus(Jid roomWithNick, Availability availability)
+        {
+            AssertValid();
+            groupChat.SetStatusInRoom(roomWithNick, availability);
+        }
+
+        /// <summary>
         /// Leaves the specified room.
         /// </summary>
         public void LeaveRoom(Jid chatRoom, string nickname)
