@@ -980,5 +980,10 @@ namespace Sharp.Xmpp.Client
         /// <exception cref="ObjectDisposedException">The XmppClient object
         /// has been disposed.</exception>
         void Unblock(Jid jid);
+
+        /// <summary>
+        /// Sets your presence in the specified room.
+        /// </summary>
+        void SetRoomStatus(Jid roomWithNick, Availability availability);
     }
 }
