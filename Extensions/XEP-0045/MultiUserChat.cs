@@ -169,10 +169,11 @@ namespace Sharp.Xmpp.Extensions
 					}
 				}
 
+                bool hasNoAvailability = string.IsNullOrWhiteSpace(stanza.Data["show"]?.InnerText);
 
-				if (person != null) {
+                if (person != null) {
 					PrescenceChanged.Raise (this, new GroupPresenceEventArgs (person, statusCodeList));
-					return true;
+					return hasNoAvailability;
 				}
 			}
 
