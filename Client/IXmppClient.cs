@@ -55,7 +55,12 @@ namespace Sharp.Xmpp.Client
         /// <summary>
         /// The underlying XmppIm instance.
         /// </summary>
-        XmppIm Im { get; }
+        IXmppIm Im { get; }
+
+        /// <summary>
+        /// The underlying MUC instance.
+        /// </summary>
+        IMultiUserChat Muc { get; }
 
         /// <summary>
         /// Determines whether the session with the server is TLS/SSL encrypted.
@@ -102,12 +107,6 @@ namespace Sharp.Xmpp.Client
         RemoteCertificateValidationCallback Validate { get; set; }
 
         /// <summary>
-        /// A callback method to invoke when a request for voice is received
-        /// from another XMPP user.
-        /// </summary>
-        RegistrationCallback VoiceRequestedInGroupChat { get; set; }
-
-        /// <summary>
         /// The event that is raised when an activity notification has been received.
         /// </summary>
         event EventHandler<ActivityChangedEventArgs> ActivityChanged;
@@ -134,31 +133,6 @@ namespace Sharp.Xmpp.Client
         /// inform subscribers of the progress of the operation.
         /// </summary>
         event EventHandler<FileTransferProgressEventArgs> FileTransferProgress;
-
-        /// <summary>
-        /// The event that is raised when the subject is changed in a group chat.
-        /// </summary>
-        event EventHandler<MessageEventArgs> GroupChatSubjectChanged;
-
-        /// <summary>
-        /// The event that is raised when an invite to a group chat is declined.
-        /// </summary>
-        event EventHandler<GroupInviteDeclinedEventArgs> GroupInviteDeclined;
-
-        /// <summary>
-        /// The event that is raised when an invite to a group chat is received.
-        /// </summary>
-        event EventHandler<GroupInviteEventArgs> GroupInviteReceived;
-
-        /// <summary>
-        /// The event that is raised when the server responds with an error in relation to a group chat.
-        /// </summary>
-        event EventHandler<GroupErrorEventArgs> GroupMucError;
-
-        /// <summary>
-        /// The event that is raised when a participant's presence is changed in a group chat.
-        /// </summary>
-        event EventHandler<GroupPresenceEventArgs> GroupPresenceChanged;
 
         /// <summary>
         /// The event that is raised when a chat message is received.
@@ -352,21 +326,7 @@ namespace Sharp.Xmpp.Client
         /// XML stream with the server, or resource binding failed, or the initialization
         /// of an XMPP extension failed.</exception>
         void Connect(string resource = null);
-
-        /// <summary>
-        /// Responds to a group chat invitation with a decline message.
-        /// </summary>
-        /// <param name="invite">Original group chat invitation.</param>
-        /// <param name="reason">Reason for declining.</param>
-        void DeclineInvite(IInvite invite, string reason);
-
-        /// <summary>
-        /// Returns a list of active public chat room messages.
-        /// </summary>
-        /// <param name="chatService">JID of the chat service (depends on server)</param>
-        /// <returns>List of Room JIDs</returns>
-        IEnumerable<RoomInfoBasic> DiscoverRooms(Jid chatService);
-
+        
         /// <summary>
         /// Returns an enumerable collection of blocked contacts.
         /// </summary>
@@ -412,60 +372,7 @@ namespace Sharp.Xmpp.Client
         /// unspecified XMPP error occurred.</exception>
         /// <include file='Examples.xml' path='S22/Xmpp/Client/XmppClient[@name="GetFeatures"]/*'/>
         IEnumerable<Extension> GetFeatures(Jid jid);
-
-        /// <summary>
-        /// Sends a request to get X previous messages.
-        /// </summary>
-        /// <param name="option">How long to look back</param>
-        void GetGroupChatLog(History option);
-
-        /// <summary>
-        /// Requests a list of occupants within the specific room.
-        /// </summary>
-        IEnumerable<Occupant> GetRoomAllOccupants(Jid chatRoom);
-
-        /// <summary>
-        /// Requests a list of people banned within the specified room.
-        /// </summary>
-        IEnumerable<Occupant> GetRoomBanList(Jid chatRoom);
-
-        /// <summary>
-        /// Returns a list of active public chat room messages.
-        /// </summary>
-        /// <param name="chatRoom">Room Identifier</param>
-        /// <returns>Information about room</returns>
-        RoomInfoExtended GetRoomInfo(Jid chatRoom);
-
-        /// <summary>
-        /// Requests a list of room members within the specified room.
-        /// </summary>
-        IEnumerable<Occupant> GetRoomMembers(Jid chatRoom);
-
-        /// <summary>
-        /// Requests a list of moderators within the specified room.
-        /// </summary>
-        IEnumerable<Occupant> GetRoomModerators(Jid chatRoom);
-
-        /// <summary>
-        /// Requests a list of room owners within the specified room.
-        /// </summary>
-        IEnumerable<Occupant> GetRoomOwners(Jid chatRoom);
-
-        /// <summary>
-        /// Requests a list of non-members within the specified room.
-        /// </summary>
-        IEnumerable<Occupant> GetRoomStrangers(Jid chatRoom);
-
-        /// <summary>
-        /// Requests a list of visitors within the specified room.
-        /// </summary>
-        IEnumerable<Occupant> GetRoomVisitors(Jid chatRoom);
-
-        /// <summary>
-        /// Requests a list of occupants with a voice privileges within the specified room.
-        /// </summary>
-        IEnumerable<Occupant> GetRoomVoiceList(Jid chatRoom);
-
+        
         /// <summary>
         /// Retrieves the user's roster (contact list).
         /// </summary>
@@ -623,35 +530,6 @@ namespace Sharp.Xmpp.Client
         string InitiateFileTransfer(Jid to, Stream stream, string name, long size, string description = null, Action<bool, FileTransfer> cb = null);
         
         /// <summary>
-        /// Joins or creates new room using the specified room.
-        /// </summary>
-        /// <param name="chatRoom">Chat room</param>
-        /// <param name="nickname">Desired nickname</param>
-        /// <param name="password">(Optional) Password</param>
-        void JoinRoom(Jid chatRoom, string nickname, string password = null);
-
-        /// <summary>
-        /// Allows moderators to kick an occupant from the room.
-        /// </summary>
-        /// <param name="chatRoom">chat room</param>
-        /// <param name="nickname">user to kick</param>
-        /// <param name="reason">reason for kick</param>
-        void KickGroupOccupant(Jid chatRoom, string nickname, string reason = null);
-
-        /// <summary>
-        /// Leaves the specified room.
-        /// </summary>
-        void LeaveRoom(Jid chatRoom, string nickname);
-
-        /// <summary>
-        /// Allows a user to modify the configuration of a specified room.
-        /// Only "Room Owners" may edit room config.
-        /// </summary>
-        /// <param name="room">JID of the room.</param>
-        /// <param name="callback">Room Configuration callback.</param>
-        void ModifyRoomConfig(Jid room, RegistrationCallback callback);
-
-        /// <summary>
         /// Pings the user with the specified JID.
         /// </summary>
         /// <param name="jid">The JID of the user to ping.</param>
@@ -743,20 +621,6 @@ namespace Sharp.Xmpp.Client
         /// <param name="callback">The callback method to call after the Request Result has being received. Included the serialised dat
         /// of the answer to the request</param>
         void RequestCustomIq(Jid jid, string str, Action callback = null);
-
-        /// <summary>
-        /// Allows visitors to request membership to a room.
-        /// </summary>
-        void RequestVoice(Jid chatRoom);
-
-        /// <summary>
-        /// Asks the chat service to invite the specified user to the chat room you specify.
-        /// </summary>
-        /// <param name="to">user you intend to invite to chat room.</param>
-        /// <param name="message">message you want to send to the user.</param>
-        /// <param name="chatRoom">Jid of the chat room.</param>
-        /// <param name="password">Password if any.</param>
-        void SendInvite(Jid to, Jid chatRoom, string message, string password = null);
 
         /// <summary>
         /// Sends the specified chat message.
@@ -980,10 +844,5 @@ namespace Sharp.Xmpp.Client
         /// <exception cref="ObjectDisposedException">The XmppClient object
         /// has been disposed.</exception>
         void Unblock(Jid jid);
-
-        /// <summary>
-        /// Sets your presence in the specified room.
-        /// </summary>
-        void SetRoomStatus(Jid roomWithNick, Availability availability);
     }
 }

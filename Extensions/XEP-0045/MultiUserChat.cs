@@ -10,7 +10,7 @@ using Sharp.Xmpp.Im;
 
 namespace Sharp.Xmpp.Extensions
 {
-    internal class MultiUserChat : XmppExtension, IInputFilter<Im.Message>, IInputFilter<Im.Presence>
+    internal class MultiUserChat : XmppExtension, IInputFilter<Im.Message>, IInputFilter<Im.Presence>, IMultiUserChat
     {
         public MultiUserChat(XmppIm im) : base(im)
         {
@@ -45,13 +45,13 @@ namespace Sharp.Xmpp.Extensions
 
         public event EventHandler<Im.MessageEventArgs> SubjectChanged;
 
-        public event EventHandler<GroupPresenceEventArgs> PrescenceChanged;
+        public event EventHandler<GroupPresenceEventArgs> MucStatus;
 
         public event EventHandler<GroupInviteEventArgs> InviteReceived;
 
-        public event EventHandler<GroupInviteDeclinedEventArgs> InviteWasDeclined;
+        public event EventHandler<GroupInviteDeclinedEventArgs> InviteDeclined;
 
-        public event EventHandler<GroupErrorEventArgs> MucErrorResponse;
+        public event EventHandler<GroupErrorEventArgs> ErrorResponse;
 
         public RegistrationCallback VoiceRequested;
 
@@ -66,7 +66,7 @@ namespace Sharp.Xmpp.Extensions
             {
                 // Unable to send a message... many reasons
                 var error = new MucError(stanza);
-                MucErrorResponse?.Raise(this, new GroupErrorEventArgs(error));
+                ErrorResponse?.Raise(this, new GroupErrorEventArgs(error));
                 return true;
             }
 
@@ -78,11 +78,11 @@ namespace Sharp.Xmpp.Extensions
                 return true;
             }
 
-            if (InviteDeclined.IsElement(stanza))
+            if (Extensions.InviteDeclined.IsElement(stanza))
             {
                 // Chat room invite was declined
                 var invite = new InviteDeclined(stanza);
-                InviteWasDeclined.Raise(this, new GroupInviteDeclinedEventArgs(invite));
+                InviteDeclined.Raise(this, new GroupInviteDeclinedEventArgs(invite));
                 return true;
             }
             
@@ -133,7 +133,7 @@ namespace Sharp.Xmpp.Extensions
 			if (MucError.IsError (stanza)) {
 				// Unable to join - No nickname specified / Duplicate nickname exists ... etc
 				var error = new MucError (stanza);
-				MucErrorResponse?.Raise (this, new GroupErrorEventArgs (error));
+				ErrorResponse?.Raise (this, new GroupErrorEventArgs (error));
 				return true;
 			}
 
@@ -172,7 +172,7 @@ namespace Sharp.Xmpp.Extensions
                 bool hasNoAvailability = string.IsNullOrWhiteSpace(stanza.Data["show"]?.InnerText);
 
                 if (person != null) {
-					PrescenceChanged.Raise (this, new GroupPresenceEventArgs (person, statusCodeList));
+					MucStatus.Raise (this, new GroupPresenceEventArgs (person, statusCodeList));
 					return hasNoAvailability;
 				}
 			}

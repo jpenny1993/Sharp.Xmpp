@@ -106,6 +106,7 @@
     <Compile Include="Extensions\XEP-0045\GroupPresenceEventArgs.cs" />
     <Compile Include="Extensions\XEP-0045\History.cs" />
     <Compile Include="Extensions\XEP-0045\IInvite.cs" />
+    <Compile Include="Extensions\XEP-0045\IMultiUserChat.cs" />
     <Compile Include="Extensions\XEP-0045\InviteDeclined.cs" />
     <Compile Include="Extensions\XEP-0045\Invite.cs" />
     <Compile Include="Extensions\XEP-0045\MucError.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Extensions\XEP-0279\ServerIpCheck.cs" />
     <Compile Include="Extensions\XEP-0280\MessageCarbons.cs" />
     <Compile Include="Im\IRoster.cs" />
+    <Compile Include="Im\IXmppIm.cs" />
     <Compile Include="Im\SubscriptionRequest.cs" />
     <Compile Include="XmppDisconnectionException.cs" />
     <Compile Include="XmppExceptions.cs" />

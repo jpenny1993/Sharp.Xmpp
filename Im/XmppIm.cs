@@ -16,7 +16,7 @@ namespace Sharp.Xmpp.Im
     /// Implements the basic instant messaging (IM) and presence functionality.
     /// </summary>
     /// <remarks>For implementation details, refer to RFC 3921.</remarks>
-    public class XmppIm : IDisposable
+    public class XmppIm : IDisposable, IXmppIm
     {
         /// <summary>
         /// Provides access to the core facilities of XMPP.
